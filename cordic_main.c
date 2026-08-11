@@ -178,10 +178,10 @@ void compare_cordics_performace(void)
     printf("%u repetitions x %zu inputs = %llu calls per benchmark\n\n",
            repetitions, input_count, calls_per_benchmark);
 
-    RUN_BENCHMARK("cordic_V_fixed_point",
-                  cordic_V_fixed_point(&x, &y, &angle_q15));
-    // RUN_BENCHMARK("cordic_V_fixed_point_pipelined",
-    //               cordic_V_fixed_point_pipelined(&x, &y, &angle_q15));
+    // RUN_BENCHMARK("cordic_V_fixed_point",
+    //               cordic_V_fixed_point(&x, &y, &angle_q15));
+    RUN_BENCHMARK("cordic_V_fixed_point_pipelined",
+                  cordic_V_fixed_point_pipelined(&x, &y, &angle_q15));
 
     // for (factor_index = 0;
     //      factor_index < sizeof(unroll_factors) / sizeof(unroll_factors[0]);
@@ -202,6 +202,8 @@ int main(void)
 {
     //compare_cordics_results();
     compare_cordics_performace();
+
+    // ~ 239 cycles per call for cordic_V_fixed_point
 
     return 0;
 }
