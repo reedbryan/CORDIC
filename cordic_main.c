@@ -30,6 +30,8 @@ int z_table[15] = {
 void cordic_V_fixed_point(int *x, int *y, int *z);
 void cordic_V_fixed_point_unrolled(int *x, int *y, int *z, int unroll_factor);
 void cordic_V_fixed_point_pipelined(int *x, int *y, int *z);
+void cordic_V_fixed_point_optimal(int *x, int *y, int *z);
+void cordic_V_fixed_point_ternary(int *x, int *y, int *z);
 
 void compare_cordics_results(void){
     /* Q15 inputs: x = 27852 / SCALE, y = 24903 / SCALE. */
@@ -178,25 +180,25 @@ void compare_cordics_performace(void)
     printf("%u repetitions x %zu inputs = %llu calls per benchmark\n\n",
            repetitions, input_count, calls_per_benchmark);
 
-    // RUN_BENCHMARK("cordic_V_fixed_point",
-    //               cordic_V_fixed_point(&x, &y, &angle_q15));
-    // RUN_BENCHMARK("cordic_V_fixed_point_pipelined",
-    //               cordic_V_fixed_point_pipelined(&x, &y, &angle_q15));
+    RUN_BENCHMARK("cordic_V_fixed_point",
+                  cordic_V_fixed_point(&x, &y, &angle_q15));
+    RUN_BENCHMARK("cordic_V_fixed_point_pipelined",
+                  cordic_V_fixed_point_pipelined(&x, &y, &angle_q15));
+    for (factor_index = 0;
+         factor_index < sizeof(unroll_factors) / sizeof(unroll_factors[0]);
+         ++factor_index) {
+        char label[64];
 
-    RUN_BENCHMARK("cordic_V_fixed_point_unrolled (full)",
-                  cordic_V_fixed_point_unrolled(&x, &y, &angle_q15, 15));
+        snprintf(label, sizeof(label), "cordic_V_fixed_point_unrolled (%d)",
+                 unroll_factors[factor_index]);
+        RUN_BENCHMARK(label,
+                      cordic_V_fixed_point_unrolled(&x, &y, &angle_q15,
+                                                     unroll_factors[factor_index]));
+    }
 
-    // for (factor_index = 0;
-    //      factor_index < sizeof(unroll_factors) / sizeof(unroll_factors[0]);
-    //      ++factor_index) {
-    //     char label[64];
+    RUN_BENCHMARK("cordic_V_fixed_point_ternary",
+                  cordic_V_fixed_point_ternary(&x, &y, &angle_q15));
 
-    //     snprintf(label, sizeof(label), "cordic_V_fixed_point_unrolled (%d)",
-    //              unroll_factors[factor_index]);
-    //     RUN_BENCHMARK(label,
-    //                   cordic_V_fixed_point_unrolled(&x, &y, &angle_q15,
-    //                                                  unroll_factors[factor_index]));
-    // }
 
 #undef RUN_BENCHMARK
 }
@@ -208,7 +210,7 @@ int main(void)
 
     // ~ 239 cycles per call for cordic_V_fixed_point
     // ~ 235 cycles per call for cordic_V_fixed_point_pipelined
-    // 
-
+    // ~ 236 cycles per call for cordic_V_fixed_point_unrolled (full)
+    
     return 0;
 }
