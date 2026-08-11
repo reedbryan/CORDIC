@@ -31,8 +31,7 @@ void cordic_V_fixed_point(int *x, int *y, int *z);
 void cordic_V_fixed_point_unrolled(int *x, int *y, int *z, int unroll_factor);
 void cordic_V_fixed_point_pipelined(int *x, int *y, int *z);
 
-int main(void)
-{
+void compare_cordics_results(void){
     /* Q15 inputs: x = 27852 / SCALE, y = 24903 / SCALE. */
     const int x_input = 27852;
     const int y_input = 24903;
@@ -44,7 +43,7 @@ int main(void)
 
     if (x_input <= 0) {
         fprintf(stderr, "This vectoring implementation requires x > 0.\n");
-        return 1;
+        return;
     }
 
     printf("\n\nVectoring CORDIC: atan(y / x)\n");
@@ -118,6 +117,91 @@ int main(void)
     printf("atan(y / x) (Q15 radians): %d\n", angle_q15);
     printf("atan(y / x) (radians): %.6f\n", angle_q15 / (double)SCALE);
     printf("Residual y after CORDIC (unrolled): %d\n\n", y);
+}
+
+void compare_cordics_performace(void)
+{
+    /* Keep x positive because this vectoring implementation requires it. */
+    static const int test_inputs[][2] = {
+        {27852, 24903},
+        {16384, 16384},
+        {29491, 3277},
+        {3277, 29491},
+        {16384, -3277},
+        {24576, -16384}
+    };
+    const int unroll_factors[] = {1, 3, 5, 15};
+    const unsigned int repetitions = 250000;
+    const size_t input_count = sizeof(test_inputs) / sizeof(test_inputs[0]);
+    const unsigned long long calls_per_benchmark =
+        (unsigned long long)repetitions * input_count;
+    struct timespec start_time;
+    struct timespec end_time;
+    size_t factor_index;
+
+    /*
+     * Time the whole batch instead of each individual call.  A CORDIC call is
+     * shorter than (or close to) the cost and noise of two clock_gettime()
+     * calls.  Taking one timestamp pair around many calls amortizes that
+     * overhead while still allowing an average time per CORDIC call to be
+     * reported.  Each benchmark uses the same input and checksum overhead.
+     */
+#define RUN_BENCHMARK(LABEL, CORDIC_CALL)                                     \
+    do {                                                                       \
+        unsigned long long checksum = 0;                                      \
+        unsigned int repetition;                                               \
+        size_t input_index;                                                    \
+                                                                             \
+        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start_time);                  \
+        for (repetition = 0; repetition < repetitions; ++repetition) {        \
+            for (input_index = 0; input_index < input_count; ++input_index) { \
+                int x = test_inputs[input_index][0];                          \
+                int y = test_inputs[input_index][1];                          \
+                int angle_q15;                                                \
+                                                                             \
+                CORDIC_CALL;                                                  \
+                checksum += (unsigned int)x;                                  \
+                checksum += (unsigned int)y;                                  \
+                checksum += (unsigned int)angle_q15;                          \
+            }                                                                  \
+        }                                                                      \
+        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end_time);                    \
+        printf("%-42s total: %12.3f us  average: %.6f us/call  checksum: %llu\n", \
+               (LABEL),                                                        \
+               elapsed_microseconds(&start_time, &end_time),                  \
+               elapsed_microseconds(&start_time, &end_time) /                 \
+                   (double)calls_per_benchmark,                               \
+               checksum);                                                      \
+    } while (0)
+
+    printf("\nCORDIC performance comparison\n");
+    printf("%u repetitions x %zu inputs = %llu calls per benchmark\n\n",
+           repetitions, input_count, calls_per_benchmark);
+
+    RUN_BENCHMARK("cordic_V_fixed_point",
+                  cordic_V_fixed_point(&x, &y, &angle_q15));
+    RUN_BENCHMARK("cordic_V_fixed_point_pipelined",
+                  cordic_V_fixed_point_pipelined(&x, &y, &angle_q15));
+
+    for (factor_index = 0;
+         factor_index < sizeof(unroll_factors) / sizeof(unroll_factors[0]);
+         ++factor_index) {
+        char label[64];
+
+        snprintf(label, sizeof(label), "cordic_V_fixed_point_unrolled (%d)",
+                 unroll_factors[factor_index]);
+        RUN_BENCHMARK(label,
+                      cordic_V_fixed_point_unrolled(&x, &y, &angle_q15,
+                                                     unroll_factors[factor_index]));
+    }
+
+#undef RUN_BENCHMARK
+}
+
+int main(void)
+{
+    //compare_cordics_results();
+    compare_cordics_performace();
 
     return 0;
 }
