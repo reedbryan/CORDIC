@@ -180,8 +180,11 @@ void compare_cordics_performace(void)
 
     // RUN_BENCHMARK("cordic_V_fixed_point",
     //               cordic_V_fixed_point(&x, &y, &angle_q15));
-    RUN_BENCHMARK("cordic_V_fixed_point_pipelined",
-                  cordic_V_fixed_point_pipelined(&x, &y, &angle_q15));
+    // RUN_BENCHMARK("cordic_V_fixed_point_pipelined",
+    //               cordic_V_fixed_point_pipelined(&x, &y, &angle_q15));
+
+    RUN_BENCHMARK("cordic_V_fixed_point_unrolled (full)",
+                  cordic_V_fixed_point_unrolled(&x, &y, &angle_q15, 15));
 
     // for (factor_index = 0;
     //      factor_index < sizeof(unroll_factors) / sizeof(unroll_factors[0]);
@@ -204,6 +207,8 @@ int main(void)
     compare_cordics_performace();
 
     // ~ 239 cycles per call for cordic_V_fixed_point
+    // ~ 235 cycles per call for cordic_V_fixed_point_pipelined
+    // 
 
     return 0;
 }
