@@ -180,20 +180,20 @@ void compare_cordics_performace(void)
 
     RUN_BENCHMARK("cordic_V_fixed_point",
                   cordic_V_fixed_point(&x, &y, &angle_q15));
-    RUN_BENCHMARK("cordic_V_fixed_point_pipelined",
-                  cordic_V_fixed_point_pipelined(&x, &y, &angle_q15));
+    // RUN_BENCHMARK("cordic_V_fixed_point_pipelined",
+    //               cordic_V_fixed_point_pipelined(&x, &y, &angle_q15));
 
-    for (factor_index = 0;
-         factor_index < sizeof(unroll_factors) / sizeof(unroll_factors[0]);
-         ++factor_index) {
-        char label[64];
+    // for (factor_index = 0;
+    //      factor_index < sizeof(unroll_factors) / sizeof(unroll_factors[0]);
+    //      ++factor_index) {
+    //     char label[64];
 
-        snprintf(label, sizeof(label), "cordic_V_fixed_point_unrolled (%d)",
-                 unroll_factors[factor_index]);
-        RUN_BENCHMARK(label,
-                      cordic_V_fixed_point_unrolled(&x, &y, &angle_q15,
-                                                     unroll_factors[factor_index]));
-    }
+    //     snprintf(label, sizeof(label), "cordic_V_fixed_point_unrolled (%d)",
+    //              unroll_factors[factor_index]);
+    //     RUN_BENCHMARK(label,
+    //                   cordic_V_fixed_point_unrolled(&x, &y, &angle_q15,
+    //                                                  unroll_factors[factor_index]));
+    // }
 
 #undef RUN_BENCHMARK
 }
