@@ -17,6 +17,7 @@ int z_table[15] = {
 };
 
 void cordic_V_fixed_point(int *x, int *y, int *z);
+void cordic_V_fixed_point_unrolled(int *x, int *y, int *z, int unroll_factor);
 
 int main(void)
 {
@@ -32,14 +33,25 @@ int main(void)
         return 1;
     }
 
+    printf("\n\nVectoring CORDIC: atan(y / x)\n");
     cordic_V_fixed_point(&x, &y, &angle_q15);
-
-    printf("Vectoring CORDIC: atan(y / x)\n\n");
     printf("Input x (Q15): %d (%.6f)\n", x_input, x_input / (double)SCALE);
     printf("Input y (Q15): %d (%.6f)\n", y_input, y_input / (double)SCALE);
     printf("atan(y / x) (Q15 radians): %d\n", angle_q15);
     printf("atan(y / x) (radians): %.6f\n", angle_q15 / (double)SCALE);
     printf("Residual y after CORDIC: %d\n", y);
+    
+    printf("\n\nVectoring CORDIC (unrolled): atan(y / x)\n");
+    x = x_input;
+    y = y_input;
+    cordic_V_fixed_point_unrolled(&x, &y, &angle_q15, 3);
+    cordic_V_fixed_point_unrolled(&x, &y, &angle_q15, 5);
+    cordic_V_fixed_point_unrolled(&x, &y, &angle_q15, 15);
+    printf("Input x (Q15): %d (%.6f)\n", x_input, x_input / (double)SCALE);
+    printf("Input y (Q15): %d (%.6f)\n", y_input, y_input / (double)SCALE);
+    printf("atan(y / x) (Q15 radians): %d\n", angle_q15);
+    printf("atan(y / x) (radians): %.6f\n", angle_q15 / (double)SCALE);
+    printf("Residual y after CORDIC (unrolled): %d\n\n", y);
 
     return 0;
 }

@@ -43,13 +43,13 @@ int main(int argc, char **argv) {
 
     struct timespec start, end;
 
-    clock_gettime(CLOCK_MONOTONIC, &start);
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
 
     for (int i = 0; i < BENCH_ITERS; i++) {
         z_d = atan(y_d / x_d);
     }
 
-    clock_gettime(CLOCK_MONOTONIC, &end);
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
 
     double elapsed = elapsed_seconds(start, end);
     double avg_ns = (elapsed * 1e9) / BENCH_ITERS;
