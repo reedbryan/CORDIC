@@ -1,0 +1,7 @@
+v 4
+file . "Cordic_V_fixed_point.vhd" "c486b1690bd5a71b0fd3a791fe598c79681d83e7" "20260811205511.995":
+  entity cordic_vectoring at 1( 0) + 0 on 17;
+  architecture rtl of cordic_vectoring at 28( 599) + 0 on 18;
+file . "Cordic_V_tb.vhd" "a38c4f66c7a0b3d34c1c1187697a975796d0d26b" "20260811205512.160":
+  entity tb_cordic_vectoring at 1( 0) + 0 on 19;
+  architecture sim of tb_cordic_vectoring at 9( 165) + 0 on 20;

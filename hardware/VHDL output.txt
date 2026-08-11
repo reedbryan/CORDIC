@@ -1,0 +1,65 @@
+>> ghdl -a Cordic_V_fixed_point.vhd
+>> ghdl -a Cordic_V_tb.vhd
+>> ghdl -e tb_cordic_vectoring
+>> ghdl -r tb_cordic_vectoring
+Cordic_V_tb.vhd:135:13:@245ns:(report note): ========================================
+Cordic_V_tb.vhd:137:13:@245ns:(report note): Input X       = 536870912
+Cordic_V_tb.vhd:140:13:@245ns:(report note): Input Y       = 0
+Cordic_V_tb.vhd:143:13:@245ns:(report note): X magnitude   = 1.646760256960988
+Cordic_V_tb.vhd:146:13:@245ns:(report note): Angle (rad)   = 8.03973525762558e-5
+Cordic_V_tb.vhd:149:13:@245ns:(report note): Angle (deg)   = 4.606428986644693e-3
+Cordic_V_tb.vhd:152:13:@245ns:(report note): Expected (deg)= 0.0
+Cordic_V_tb.vhd:155:13:@245ns:(report note): Error (deg)   = 4.606428986644693e-3
+Cordic_V_tb.vhd:158:13:@245ns:(report note): Cycles        = 19
+Cordic_V_tb.vhd:161:13:@245ns:(report note): ========================================
+Cordic_V_tb.vhd:135:13:@465ns:(report note): ========================================
+Cordic_V_tb.vhd:137:13:@465ns:(report note): Input X       = 536870912
+Cordic_V_tb.vhd:140:13:@465ns:(report note): Input Y       = 536870912
+Cordic_V_tb.vhd:143:13:@465ns:(report note): X magnitude   = 2.3288706950843334
+Cordic_V_tb.vhd:146:13:@465ns:(report note): Angle (rad)   = 7.852839697152376e-1
+Cordic_V_tb.vhd:149:13:@465ns:(report note): Angle (deg)   = 4.499345718396227e1
+Cordic_V_tb.vhd:152:13:@465ns:(report note): Expected (deg)= 4.5e1
+Cordic_V_tb.vhd:155:13:@465ns:(report note): Error (deg)   = 6.5428160377294375e-3
+Cordic_V_tb.vhd:158:13:@465ns:(report note): Cycles        = 19
+Cordic_V_tb.vhd:161:13:@465ns:(report note): ========================================
+Cordic_V_tb.vhd:135:13:@685ns:(report note): ========================================
+Cordic_V_tb.vhd:137:13:@685ns:(report note): Input X       = 536870912
+Cordic_V_tb.vhd:140:13:@685ns:(report note): Input Y       = -536870912
+Cordic_V_tb.vhd:143:13:@685ns:(report note): X magnitude   = 2.3288706950843334
+Cordic_V_tb.vhd:146:13:@685ns:(report note): Angle (rad)   = -7.855123560875654e-1
+Cordic_V_tb.vhd:149:13:@685ns:(report note): Angle (deg)   = -4.500654275919496e1
+Cordic_V_tb.vhd:152:13:@685ns:(report note): Expected (deg)= -4.5e1
+Cordic_V_tb.vhd:155:13:@685ns:(report note): Error (deg)   = 6.542759194957171e-3
+Cordic_V_tb.vhd:158:13:@685ns:(report note): Cycles        = 19
+Cordic_V_tb.vhd:161:13:@685ns:(report note): ========================================
+Cordic_V_tb.vhd:135:13:@905ns:(report note): ========================================
+Cordic_V_tb.vhd:137:13:@905ns:(report note): Input X       = 0
+Cordic_V_tb.vhd:140:13:@905ns:(report note): Input Y       = 536870912
+Cordic_V_tb.vhd:143:13:@905ns:(report note): X magnitude   = 1.646760256960988
+Cordic_V_tb.vhd:146:13:@905ns:(report note): Angle (rad)   = 1.5708767231553793
+Cordic_V_tb.vhd:149:13:@905ns:(report note): Angle (deg)   = 9.000460637214387e1
+Cordic_V_tb.vhd:152:13:@905ns:(report note): Expected (deg)= 9.0e1
+Cordic_V_tb.vhd:155:13:@905ns:(report note): Error (deg)   = 4.606372143868498e-3
+Cordic_V_tb.vhd:158:13:@905ns:(report note): Cycles        = 19
+Cordic_V_tb.vhd:161:13:@905ns:(report note): ========================================
+Cordic_V_tb.vhd:135:13:@1125ns:(report note): ========================================
+Cordic_V_tb.vhd:137:13:@1125ns:(report note): Input X       = 536870912
+Cordic_V_tb.vhd:140:13:@1125ns:(report note): Input Y       = 268435456
+Cordic_V_tb.vhd:143:13:@1125ns:(report note): X magnitude   = 1.841133939102292
+Cordic_V_tb.vhd:146:13:@1125ns:(report note): Angle (rad)   = 4.6357169188559055e-1
+Cordic_V_tb.vhd:149:13:@1125ns:(report note): Angle (deg)   = 2.656070144678333e1
+Cordic_V_tb.vhd:152:13:@1125ns:(report note): Expected (deg)= 2.6565051177e1
+Cordic_V_tb.vhd:155:13:@1125ns:(report note): Error (deg)   = 4.349730216670622e-3
+Cordic_V_tb.vhd:158:13:@1125ns:(report note): Cycles        = 19
+Cordic_V_tb.vhd:161:13:@1125ns:(report note): ========================================
+Cordic_V_tb.vhd:135:13:@1345ns:(report note): ========================================
+Cordic_V_tb.vhd:137:13:@1345ns:(report note): Input X       = 268435456
+Cordic_V_tb.vhd:140:13:@1345ns:(report note): Input Y       = 536870912
+Cordic_V_tb.vhd:143:13:@1345ns:(report note): X magnitude   = 1.8411339446902275
+Cordic_V_tb.vhd:146:13:@1345ns:(report note): Angle (rad)   = 1.1072246339172125
+Cordic_V_tb.vhd:149:13:@1345ns:(report note): Angle (deg)   = 6.34392984963739e1
+Cordic_V_tb.vhd:152:13:@1345ns:(report note): Expected (deg)= 6.3434948823e1
+Cordic_V_tb.vhd:155:13:@1345ns:(report note): Error (deg)   = 4.349673373901908e-3
+Cordic_V_tb.vhd:158:13:@1345ns:(report note): Cycles        = 19
+Cordic_V_tb.vhd:161:13:@1345ns:(report note): ========================================
+Cordic_V_tb.vhd:252:9:@1355ns:(report note): All CORDIC tests completed.
