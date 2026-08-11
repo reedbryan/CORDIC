@@ -10,3 +10,6 @@ gcc cordic_TB.c -o cordic_TB
 gcc cordic_main.c cordic_V_fixed_point.c cordic_V_fixed_point_unrolled.c cordic_V_fixed_point_pipelined.c -o cordic_main 
 
 ./cordic_main
+
+## Check cycles
+perf stat -r 10 -e cycles,instructions,branches,branch-misses ./cordic_main
