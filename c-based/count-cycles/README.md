@@ -41,6 +41,25 @@ Calculate the result as:
 cycles per CORDIC call = cycles reported by perf / 1,500,000
 ```
 
+## Collect every result as CSV
+
+After building the executables, run:
+
+```sh
+./collect_cycles.sh > cycles_per_call.csv
+```
+
+The script runs `perf stat -r 10 -e cycles` for every executable and writes a
+CSV matrix with implementations as rows and compiler optimization levels as
+columns. Each value is the reported cycle count divided by 1,500,000 calls.
+Warnings and `perf` diagnostics are written to standard error, not the CSV.
+
+To use a different repeat count, set `PERF_RUNS`:
+
+```sh
+PERF_RUNS=20 ./collect_cycles.sh > cycles_per_call.csv
+```
+
 Each executable prints a checksum. Matching checksums confirm the variant
 produced the same result as the baseline. `rounded` intentionally differs
 because it changes shift rounding, so compare it using numerical accuracy.
