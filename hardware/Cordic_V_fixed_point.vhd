@@ -12,11 +12,11 @@ entity cordic_vectoring is
 
         start   : in  std_logic;
 
-        -- 32-bit Q3.29 inputs
+        -- 32-bit Q15 inputs
         x_in    : in  signed(31 downto 0);
         y_in    : in  signed(31 downto 0);
 
-        -- 32-bit Q3.29 outputs
+        -- 32-bit Q15 outputs
         x_out   : out signed(31 downto 0);
         z_out   : out signed(31 downto 0);
 
@@ -28,13 +28,13 @@ end entity cordic_vectoring;
 architecture rtl of cordic_vectoring is
 
     ----------------------------------------------------------------
-    -- Q3.29 format
+    --Q15 format
     --
     -- 32 bits total
-    -- 3 integer bits
-    -- 29 fractional bits
+    -- 16 integer bits
+    -- 15 fractional bits
     --
-    -- fixed_point_value = real_value * 2^29
+    -- fixed_point_value = real_value * 2^15
     ----------------------------------------------------------------
 
     ----------------------------------------------------------------
@@ -43,29 +43,27 @@ architecture rtl of cordic_vectoring is
     type atan_table_t is array (0 to ITERATIONS-1)
         of signed(31 downto 0);
 
-    --17 iterations of atan(2^-i) in Q3.29 format
+    --15 iterations of atan(2^-i) in Q15 format
     constant ATAN_TABLE : atan_table_t := (
-        to_signed(421657428, 32), -- atan(2^0)
-        to_signed(248918915, 32), -- atan(2^-1)
-        to_signed(131521918, 32), -- atan(2^-2)
-        to_signed( 66762526, 32), -- atan(2^-3)
-        to_signed( 33458859, 32), -- atan(2^-4)
-        to_signed( 16762184, 32), -- atan(2^-5)
-        to_signed(  8388346, 32), -- atan(2^-6)
-        to_signed(  4194218, 32), -- atan(2^-7)
-        to_signed(  2097127, 32), -- atan(2^-8)
-        to_signed(  1048560, 32), -- atan(2^-9)
-        to_signed(   524288, 32), -- atan(2^-10)
-        to_signed(   262144, 32), -- atan(2^-11)
-        to_signed(   131072, 32), -- atan(2^-12)
-        to_signed(    65536, 32), -- atan(2^-13)
-        to_signed(    32768, 32), -- atan(2^-14)
-        to_signed(    16384, 32), -- atan(2^-15)
-        to_signed(     8192, 32)  -- atan(2^-16)
-    );
+    to_signed(25736, 32), -- atan(2^-0) = 0.785398163397
+    to_signed(15193, 32), -- atan(2^-1) = 0.463647609001
+    to_signed(8027, 32), -- atan(2^-2) = 0.244978663127
+    to_signed(4075, 32), -- atan(2^-3) = 0.124354994547
+    to_signed(2045, 32), -- atan(2^-4) = 0.062418809996
+    to_signed(1024, 32), -- atan(2^-5) = 0.031239833430
+    to_signed(512, 32), -- atan(2^-6) = 0.015623728620
+    to_signed(256, 32), -- atan(2^-7) = 0.007812341060
+    to_signed(128, 32), -- atan(2^-8) = 0.003906230132
+    to_signed(64, 32), -- atan(2^-9) = 0.001953122516
+    to_signed(32, 32), -- atan(2^-10) = 0.000976562190
+    to_signed(16, 32), -- atan(2^-11) = 0.000488281211
+    to_signed(8, 32), -- atan(2^-12) = 0.000244140620
+    to_signed(4, 32), -- atan(2^-13) = 0.000122070312
+    to_signed(2, 32) -- atan(2^-14) = 0.000061035156
+);
 
     ----------------------------------------------------------------
-    -- Internal Q3.29 registers
+    -- Internal Q15 registers
     ----------------------------------------------------------------
     signal x_reg : signed(31 downto 0);
     signal y_reg : signed(31 downto 0);

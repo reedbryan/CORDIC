@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <math.h>
 
-#define Q_FORMAT 29
+#define Q_FORMAT 15
 #define SCALE (1 << Q_FORMAT)
 
 #define CORDIC_BASE   0x40000000UL
@@ -91,7 +91,7 @@ int main(void)
     const int32_t y_input = 24903;
 
     int32_t x_out;
-    int32_t angle_q29;
+    int32_t angle_q15;
 
     if (x_input <= 0) {
         fprintf(stderr,
@@ -104,9 +104,9 @@ int main(void)
         x_input,
         y_input,
         &x_out,
-        &angle_q29
+        &angle_q15
     );
-    printf("angle = %d\n", angle_q29);
+    printf("angle = %d\n", angle_q15);
 
     return 0;
 }
