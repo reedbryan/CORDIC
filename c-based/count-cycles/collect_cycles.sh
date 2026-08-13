@@ -20,6 +20,7 @@ readonly IMPLEMENTATIONS=(
     unrolled_3
     unrolled_5
     unrolled_15
+    optimal
 )
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
