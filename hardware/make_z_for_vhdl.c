@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include <math.h>
 
-#define ITERATIONS 17
-#define FRAC_BITS 29
+#define ITERATIONS 15
+#define FRAC_BITS 15
 
 int main(void)
 {

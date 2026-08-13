@@ -4,7 +4,7 @@ use ieee.numeric_std.all;
 
 entity cordic_vectoring is
     generic (
-        ITERATIONS : integer := 17
+        ITERATIONS : integer := 15
     );
     port (
         clk     : in  std_logic;
