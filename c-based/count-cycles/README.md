@@ -60,6 +60,17 @@ To use a different repeat count, set `PERF_RUNS`:
 PERF_RUNS=20 ./collect_cycles.sh > cycles_per_call.csv
 ```
 
+## Plot the CSV
+
+With Matplotlib installed, generate a grouped bar chart with:
+
+```sh
+python3 plot_cycles.py cycles_per_call.csv cycles_per_call.png
+```
+
+Omit the arguments to use the default input (`cycles_per_call.csv`) and output
+filename (`cycles_per_call.png`).
+
 Each executable prints a checksum. Matching checksums confirm the variant
 produced the same result as the baseline. `rounded` intentionally differs
 because it changes shift rounding, so compare it using numerical accuracy.

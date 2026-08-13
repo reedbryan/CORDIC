@@ -1,54 +1,55 @@
-#include <stdio.h>
-
 extern int z_table[15];
 
-#define CORDIC_STAGE(I)                                                        \
-    do {                                                                       \
-        if (y_temp_1 > 0) {                                                    \
-            x_temp_2 = x_temp_1 + (y_temp_1 >> (I));                           \
-            y_temp_2 = y_temp_1 - (x_temp_1 >> (I));                           \
-            z_temp += z_table[(I)];                                            \
-        } else {                                                               \
-            x_temp_2 = x_temp_1 - (y_temp_1 >> (I));                           \
-            y_temp_2 = y_temp_1 + (x_temp_1 >> (I));                           \
-            z_temp -= z_table[(I)];                                            \
-        }                                                                      \
-        x_temp_1 = x_temp_2;                                                   \
-        y_temp_1 = y_temp_2;                                                   \
-    } while (0)
-
-/* TOTAL_ITERATIONS must remain in sync with the size of z_table. */
 #define TOTAL_ITERATIONS 15
 
+/*
+ * The lowest-cycle implementation measured at -O3.  It keeps the CORDIC
+ * loop rolled and software-pipelines the independent angle-table load: while
+ * stage i uses angle_current, the next table entry is loaded for stage i + 1.
+ */
 void cordic_V_fixed_point_optimal(int *x, int *y, int *z)
 {
-    int x_temp_1 = *x;
-    int y_temp_1 = *y;
-    int z_temp = 0;
-    int x_temp_2;
-    int y_temp_2;
+    int x_current = *x;
+    int y_current = *y;
+    int z_current = 0;
+    int x_next;
+    int y_next;
+    int angle_current = z_table[0];
     int i;
 
-    CORDIC_STAGE(0);
-    CORDIC_STAGE(1);
-    CORDIC_STAGE(2);
-    CORDIC_STAGE(3);
-    CORDIC_STAGE(4);
-    CORDIC_STAGE(5);
-    CORDIC_STAGE(6);
-    CORDIC_STAGE(7);
-    CORDIC_STAGE(8);
-    CORDIC_STAGE(9);
-    CORDIC_STAGE(10);
-    CORDIC_STAGE(11);
-    CORDIC_STAGE(12);
-    CORDIC_STAGE(13);
-    CORDIC_STAGE(14);
+    /* Pipeline kernel: stages 0 through 13. */
+    for (i = 0; i < TOTAL_ITERATIONS - 1; ++i) {
+        const int angle_next = z_table[i + 1];
 
-    *x = x_temp_1;
-    *y = y_temp_1;
-    *z = z_temp;
+        if (y_current > 0) {
+            x_next = x_current + (y_current >> i);
+            y_next = y_current - (x_current >> i);
+            z_current += angle_current;
+        } else {
+            x_next = x_current - (y_current >> i);
+            y_next = y_current + (x_current >> i);
+            z_current -= angle_current;
+        }
+
+        x_current = x_next;
+        y_current = y_next;
+        angle_current = angle_next;
+    }
+
+    /* Pipeline epilogue: stage 14 uses the angle already loaded above. */
+    if (y_current > 0) {
+        x_next = x_current + (y_current >> (TOTAL_ITERATIONS - 1));
+        y_next = y_current - (x_current >> (TOTAL_ITERATIONS - 1));
+        z_current += angle_current;
+    } else {
+        x_next = x_current - (y_current >> (TOTAL_ITERATIONS - 1));
+        y_next = y_current + (x_current >> (TOTAL_ITERATIONS - 1));
+        z_current -= angle_current;
+    }
+
+    *x = x_next;
+    *y = y_next;
+    *z = z_current;
 }
 
-#undef CORDIC_STAGE
 #undef TOTAL_ITERATIONS

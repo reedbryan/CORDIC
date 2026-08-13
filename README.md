@@ -7,6 +7,7 @@ gcc cordic_TB.c -o cordic_TB
 ./cordic_TB
 
 ### Basic Cordic + Optimized Cordics:
+gcc -O1 -mcpu=cortex-a57 -std=c11 \
 gcc \
   cordic_main.c \
   cordic_V_fixed_point.c \
