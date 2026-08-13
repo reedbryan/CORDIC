@@ -8,6 +8,8 @@ gcc cordic_TB.c -o cordic_TB
 
 ### Basic Cordic + Optimized Cordics:
 gcc \
+gcc -O1 -mcpu=cortex-a57 -std=c11 \
+gcc -O3 -mcpu=cortex-a57 -std=c11 \
   cordic_main.c \
   cordic_V_fixed_point.c \
   cordic_V_fixed_point_unrolled.c \
@@ -17,6 +19,7 @@ gcc \
   cordic_V_fixed_point_register.c \
   cordic_V_fixed_point_rounded.c \
   cordic_V_fixed_point_simd.c \
+  cordic_V_fixed_point_optimal.c \
   -o cordic_main
 
 ./cordic_main
