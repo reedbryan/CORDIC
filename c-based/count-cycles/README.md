@@ -6,18 +6,33 @@ Each executable runs exactly 1,500,000 CORDIC calls of one implementation:
 250,000 repetitions × 6 fixed input vectors
 ```
 
-Build the executables on the ARM64 VM:
+Build every executable on the ARM64 VM:
 
 ```sh
 make
 ```
 
+Executables are grouped by compiler optimization level:
+
+```text
+base/  compiled with -O0
+O1/    compiled with -O1
+O2/    compiled with -O2
+O3/    compiled with -O3
+```
+
+Build only one optimization-level group when needed:
+
+```sh
+make O2
+```
+
 Measure one implementation at a time:
 
 ```sh
-perf stat -r 10 -e cycles ./baseline
-perf stat -r 10 -e cycles ./ternary
-perf stat -r 10 -e cycles ./unrolled_15
+perf stat -r 10 -e cycles ./O3/baseline
+perf stat -r 10 -e cycles ./O3/ternary
+perf stat -r 10 -e cycles ./O3/unrolled_15
 ```
 
 Calculate the result as:
