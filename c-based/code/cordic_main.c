@@ -37,6 +37,30 @@ void cordic_V_fixed_point_register(int *x, int *y, int *z);
 void cordic_V_fixed_point_rounded(int *x, int *y, int *z);
 void cordic_V_fixed_point_simd(int *x, int *y, int *z);
 void cordic_V_fixed_point_optimal(int *x, int *y, int *z);
+void cordic_R_fixed_point(int *x, int *y, int *z);
+void cordic_R_fixed_point_optimal(int *x, int *y, int *z);
+
+void compare_cordic_rotation_results(void)
+{
+    /* Q15 input angle: 0.5 radians.  19899 is inverse CORDIC gain in Q15. */
+    const int angle_input_q15 = 16384;
+    const int inverse_gain_q15 = 19899;
+    int x = inverse_gain_q15;
+    int y = 0;
+    int z = angle_input_q15;
+
+    cordic_R_fixed_point(&x, &y, &z);
+    printf("\nCORDIC rotation: sin/cos(0.5 radians)\n");
+    printf("baseline  cos (Q15): %d, sin (Q15): %d, residual z: %d\n",
+           x, y, z);
+
+    x = inverse_gain_q15;
+    y = 0;
+    z = angle_input_q15;
+    cordic_R_fixed_point_optimal(&x, &y, &z);
+    printf("optimal   cos (Q15): %d, sin (Q15): %d, residual z: %d\n",
+           x, y, z);
+}
 
 void compare_cordics_results(void){
     /* Q15 inputs: x = 27852 / SCALE, y = 24903 / SCALE. */
@@ -221,11 +245,8 @@ void compare_cordics_performace(void)
 int main(void)
 {
     //compare_cordics_results();
+    compare_cordic_rotation_results();
     compare_cordics_performace();
-
-    // ~ 239 cycles per call for cordic_V_fixed_point
-    // ~ 235 cycles per call for cordic_V_fixed_point_pipelined
-    // ~ 236 cycles per call for cordic_V_fixed_point_unrolled (full)
     
     return 0;
 }
