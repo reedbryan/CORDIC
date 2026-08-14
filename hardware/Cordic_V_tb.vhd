@@ -11,7 +11,7 @@ architecture sim of tb_cordic_vectoring is
     ----------------------------------------------------------------
     -- DUT configuration
     ----------------------------------------------------------------
-    constant ITERATIONS : integer := 17;
+    constant ITERATIONS : integer := 15;
 
     ----------------------------------------------------------------
     -- Clock
