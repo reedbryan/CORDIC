@@ -1,6 +1,6 @@
 CC ?= gcc
 COMMON_FLAGS := -mcpu=cortex-a57 -std=c11 -Wall -Wextra -Werror
-SRC_DIR := ..
+SRC_DIR := ../code
 DRIVER := count_cycles_main.c
 
 IMPLEMENTATIONS := baseline pipelined ternary packed_angles register rounded \

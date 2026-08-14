@@ -9,8 +9,8 @@ import numpy as np
 
 
 def main() -> None:
-    input_path = sys.argv[1] if len(sys.argv) > 1 else "us_per_call.csv"
-    output_path = sys.argv[2] if len(sys.argv) > 2 else "us_per_call.png"
+    input_path = sys.argv[1] if len(sys.argv) > 1 else "cycles_per_call.csv"
+    output_path = sys.argv[2] if len(sys.argv) > 2 else "cycles_per_call.png"
 
     with open(input_path, newline="", encoding="utf-8") as csv_file:
         rows = list(csv.DictReader(csv_file))
@@ -29,9 +29,9 @@ def main() -> None:
         offset = (index - (len(levels) - 1) / 2) * bar_width
         axis.bar(positions + offset, values, bar_width, label=level)
 
-    axis.set_title("CORDIC Performance: Microseconds per Call")
+    axis.set_title("CORDIC Performance: Cycles( per Call")
     axis.set_xlabel("Implementation")
-    axis.set_ylabel("Microseconds per call")
+    axis.set_ylabel("Cycles( per call")
     axis.set_xticks(positions, implementations, rotation=35, ha="right")
     axis.grid(axis="y", linestyle=":", alpha=0.6)
     axis.legend(title="Optimization level")
