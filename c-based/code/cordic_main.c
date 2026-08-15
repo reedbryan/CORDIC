@@ -39,6 +39,7 @@ void cordic_V_fixed_point_simd(int *x, int *y, int *z);
 void cordic_V_fixed_point_optimal(int *x, int *y, int *z);
 void cordic_R_fixed_point(int *x, int *y, int *z);
 void cordic_R_fixed_point_optimal(int *x, int *y, int *z);
+void cordic_V_fixed_point_with_feedback(int *x, int *y, int *z);
 
 void compare_cordic_rotation_results(void)
 {
@@ -237,6 +238,8 @@ void compare_cordics_performace(void)
                   cordic_V_fixed_point_simd(&x, &y, &angle_q15));
     RUN_BENCHMARK("cordic_V_fixed_point_optimal",
                   cordic_V_fixed_point_optimal(&x, &y, &angle_q15));
+    RUN_BENCHMARK("void cordic_V_fixed_point_with_feedback",
+                  cordic_V_fixed_point_with_feedback(&x, &y, &angle_q15));
 
 
 #undef RUN_BENCHMARK
@@ -247,6 +250,6 @@ int main(void)
     //compare_cordics_results();
     compare_cordic_rotation_results();
     compare_cordics_performace();
-    
+
     return 0;
 }
